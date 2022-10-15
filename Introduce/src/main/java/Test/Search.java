@@ -10,7 +10,6 @@ public class Search{
     public Search(WebDriver driver){
         this.driver= driver;
     }
-    public HomePageEbay homePageEbay;
     public HomePageAmazon homePageAmazon;
 
 
@@ -20,10 +19,6 @@ public class Search{
 
     }
 
-//    public void search2() throws Exception{
-//        homePageEbay= new HomePageEbay(driver);
-//        homePageEbay.searchIPage("iPhone 11");
-//
-//    }
+
 
 }
