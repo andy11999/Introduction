@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -19,19 +20,15 @@ public class Main {
         Search search = new Search(driver);
         search.search1();
         SearchPage searchPage= new SearchPage(driver);
-        searchPage.checkValidate();
         searchPage.extractData();
-//        ArrayList<Object> o= new ArrayList<>();
-//        o.add(searchPage);
         driver.get("https://www.ebay.com/");
         driver.manage().window().maximize();
         SearchPageEbay searchPageEbay= new SearchPageEbay(driver);
         SearchEbay searchEbay= new SearchEbay(driver);
         searchEbay.search2();
-        searchPageEbay.mention();
         searchPageEbay.extractEbay();
-//        o.add(searchPageEbay);
-//        System.out.println(o);
+        searchPage.checkValidate();
+        searchPageEbay.mention();
         driver.quit();
 
 

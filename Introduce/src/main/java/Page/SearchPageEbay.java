@@ -1,11 +1,15 @@
 package Page;
 
+import graphql.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SearchPageEbay {
     private String title = "";
@@ -44,59 +48,71 @@ public class SearchPageEbay {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-//        ArrayList<SearchPageEbay> e = new ArrayList<>();
+        List<SearchPageEbay> e = new ArrayList<>();
         List<WebElement> list = driver.findElements(By.xpath("//div[@class='s-item__title']"));
-        SearchPageEbay searchPageEbay = null;
-        for (int i = 0; i < list.size(); i++) {
-            title = ("https://ebay.com");
-            String ppath = "/html[1]/body[1]/div[8]/div[4]/div[2]/div[1]/div[2]/ul[1]/li[" + (i + 2) + "]/div[1]/div[2]/a[1]/div[1]/span[1]";
-            List<WebElement> l = driver.findElements(By.xpath(ppath));
-            if (l.size() > 0) {
-                product = driver.findElement(By.xpath(ppath)).getText();
+        do {
+            for (int i = 0; i < list.size(); i++) {
+                title = ("https://ebay.com");
+                String ppath = "/html[1]/body[1]/div[8]/div[4]/div[2]/div[1]/div[2]/ul[1]/li[" + (i + 2) + "]/div[1]/div[2]/a[1]/div[1]/span[1]";
+                List<WebElement> l = driver.findElements(By.xpath(ppath));
+                if (l.size() > 0) {
+                    product = driver.findElement(By.xpath(ppath)).getText();
 //                System.out.println(product);
-            } else {
-                product = "null";
-            }
-            String xpath = "/html[1]/body[1]/div[8]/div[4]/div[2]/div[1]/div[2]/ul[1]/li[" + (i + 2) + "]/div[1]/div[2]/div[3]/div[1]/span[1]";
-            List<WebElement> listP = driver.findElements(By.xpath(xpath));
-            if (listP.size() > 0) {
-                String p = driver.findElement(By.xpath(xpath)).getAttribute("innerHTML");
-                if (p.contains("<span class=\"DEFAULT\"> to </span>")) {
-                    if (p.contains(" VND")) {
-                        String y = p.replace("<span class=\"DEFAULT\"> to </span>", " ").replace(" VND", "").replace(",", "");
-                        String[] z = y.split(" ");
-                        Float w1 = Float.parseFloat(z[1]) / 23000;
-                        price = w1;
-                    } else {
-                        String y = p.replace("<span class=\"DEFAULT\"> to </span>", " ").replace("$", "").replace(",", "");
-                        String[] z = y.split(" ");
-                        Float w1 = Float.parseFloat(z[1]);
-                        price = w1;
-                    }
-
                 } else {
-                    if (p.contains(" VND")) {
-                        price = Float.parseFloat(p.replace(" VND", "").replace(",", ""));
-                    }else{
-                        price = Float.parseFloat(p.replace("$", "").replace(",", ""));
-                    }
+                    product = "null";
                 }
-            } else {
-                price = 0;
-            }
-//            System.out.println(price);
-            String lpath = "/html[1]/body[1]/div[8]/div[4]/div[2]/div[1]/div[2]/ul[1]/li[" + (i + 2) + "]/div[1]/div[2]/a[1]";
-            List<WebElement> lp = driver.findElements(By.xpath(lpath));
-            if (lp.size() > 0) {
-                link = driver.findElement(By.xpath(lpath)).getAttribute("href");
-            } else {
-                link = "null";
-            }
-//            System.out.println(link);
-            searchPageEbay = new SearchPageEbay(title, product, price, link);
-            System.out.println(searchPageEbay);
-        }
+                String xpath = "/html[1]/body[1]/div[8]/div[4]/div[2]/div[1]/div[2]/ul[1]/li[" + (i + 2) + "]/div[1]/div[2]/div[3]/div[1]/span[1]";
+                List<WebElement> listP = driver.findElements(By.xpath(xpath));
+                if (listP.size() > 0) {
+                    String p = driver.findElement(By.xpath(xpath)).getAttribute("innerHTML");
+                    if (p.contains("<span class=\"DEFAULT\"> to </span>")) {
+                        if (p.contains(" VND")) {
+                            String y = p.replace("<span class=\"DEFAULT\"> to </span>", " ").replace(" VND", "").replace(",", "");
+                            String[] z = y.split(" ");
+                            Float w1 = Float.parseFloat(z[1]) / 23000;
+                            price = w1;
+                        } else {
+                            String y = p.replace("<span class=\"DEFAULT\"> to </span>", " ").replace("$", "").replace(",", "");
+                            String[] z = y.split(" ");
+                            Float w1 = Float.parseFloat(z[1]);
+                            price = w1;
+                        }
 
+                    } else {
+                        if (p.contains(" VND")) {
+                            price = Float.parseFloat(p.replace(" VND", "").replace(",", ""));
+                        } else {
+                            price = Float.parseFloat(p.replace("$", "").replace(",", ""));
+                        }
+                    }
+                } else {
+                    price = 0;
+                }
+//            System.out.println(price);
+                String lpath = "/html[1]/body[1]/div[8]/div[4]/div[2]/div[1]/div[2]/ul[1]/li[" + (i + 2) + "]/div[1]/div[2]/a[1]";
+                List<WebElement> lp = driver.findElements(By.xpath(lpath));
+                if (lp.size() > 0) {
+                    link = driver.findElement(By.xpath(lpath)).getAttribute("href");
+                } else {
+                    link = "null";
+                }
+                SearchPageEbay searchPageEbay = new SearchPageEbay(title, product, price, link);
+//            System.out.println(searchPageEbay);
+                e.add(searchPageEbay);
+            }
+            if (list.size()<1){
+                driver.findElement(By.xpath("//a[@class='pagination__next icon-link']")).click();
+            }
+        }while(list.size()<1);
+
+        List<SearchPageEbay> o= new ArrayList<SearchPageEbay>();
+        o.addAll(e);
+        List<SearchPageEbay> sortedUsers = o.stream()
+                .sorted(Comparator.comparing(SearchPageEbay::getPrice))
+                .collect(Collectors.toList());
+        for(int i=0;i<sortedUsers.size();i++){
+            System.out.println(sortedUsers.get(i));
+        }
 
     }
 
