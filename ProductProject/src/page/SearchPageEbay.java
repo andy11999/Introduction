@@ -68,12 +68,12 @@ public class SearchPageEbay {
             } catch (NoSuchElementException e) {
                 price = 0;
             }
-            try{
-                link= driver.findElement(By.xpath(linkXpath)).getAttribute("href");
-            }catch (NoSuchElementException e){
-                link="null";
+            try {
+                link = driver.findElement(By.xpath(linkXpath)).getAttribute("href");
+            } catch (NoSuchElementException e) {
+                link = "null";
             }
-            Product product= new Product(title,productName,price,link);
+            Product product = new Product(title, productName, price, link);
             listProducts.add(product);
 
         }

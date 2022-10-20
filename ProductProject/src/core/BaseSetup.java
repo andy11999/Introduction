@@ -2,24 +2,16 @@ package core;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Parameters;
+import org.testng.annotations.*;
 
 import java.util.concurrent.TimeUnit;
 
 public class BaseSetup {
     private WebDriver driver;
-    static String driverPath ="resources\\drivers\\";
 
-    public WebDriver getDriver() {
-        return driver;
-    }
     @Parameters({"appURL" })
-    @BeforeMethod
     private static WebDriver initChromeDriver(String appURL){
-        System.setProperty("webdriver.chrome.driver", driverPath + "chromedriver_32.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\HP\\Downloads\\chromedriver_win32\\chromedriver.exe");
         WebDriver driver= new ChromeDriver();
         driver.manage().window().maximize();
         driver.navigate().to(appURL);
@@ -28,6 +20,11 @@ public class BaseSetup {
         return driver;
     }
 
+    @Parameters({"appURL" })
+    @BeforeTest
+    public void setDriver(String appURL) {
+        driver=initChromeDriver(appURL);
+    }
 
     @AfterClass
     public void tearDown() throws Exception {
