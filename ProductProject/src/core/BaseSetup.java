@@ -9,12 +9,12 @@ import java.util.concurrent.TimeUnit;
 public class BaseSetup {
     private WebDriver driver;
 
-    @Parameters({"appURL" })
+
     private static WebDriver initChromeDriver(String appURL){
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\HP\\Downloads\\chromedriver_win32\\chromedriver.exe");
         WebDriver driver= new ChromeDriver();
         driver.manage().window().maximize();
-        driver.navigate().to(appURL);
+        driver.get(appURL);
         driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         return driver;
@@ -22,8 +22,9 @@ public class BaseSetup {
 
     @Parameters({"appURL" })
     @BeforeTest
-    public void setDriver(String appURL) {
+    public void setDriver(@Optional String appURL) {
         driver=initChromeDriver(appURL);
+        driver.quit();
     }
 
     @AfterClass

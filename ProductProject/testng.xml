@@ -4,9 +4,7 @@
     <test name="SearchPageAmazon">
         <parameter name="appURL" value="www.amazon.com"></parameter>
         <classes>
-
             <class name="testcase.SearchIphoneTest"></class>
-
         </classes>
 
     </test>
