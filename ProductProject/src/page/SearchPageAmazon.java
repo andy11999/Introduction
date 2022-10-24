@@ -15,7 +15,11 @@ public class SearchPageAmazon {
     String productName = "";
     float price;
     String link = "";
-    private WebDriver driver;
+    public WebDriver driver;
+
+    public SearchPageAmazon(WebDriver driver) {
+        this.driver = driver;
+    }
 
     public List<Product> extractData() {
         try {
@@ -29,19 +33,40 @@ public class SearchPageAmazon {
             e.printStackTrace();
         }
         List<Product> listProducts = new ArrayList<>();
-        List<WebElement> products = driver.findElements(By.xpath("//div[@class='a-section a-spacing-small a-spacing-top-small']"));
-        String productNameXpath = "//*[(@class='a-size-medium a-color-base a-text-normal')]";
-        String priceXpath = "//span[@class='a-offscreen']";
-        String linkXpath = "//a[@class='a-size-base a-link-normal s-underline-text s-underline-link-text s-link-style a-text-normal']";
+        List<WebElement> products = driver.findElements(By.xpath("//div[@class='s-card-container s-overflow-hidden aok-relative puis-include-content-margin puis s-latency-cf-section s-card-border']"));
+        String productNameXpath = ".//span[(@class='a-size-medium a-color-base a-text-normal')]";
+        String priceXpath = ".//div[@class='a-section a-spacing-small a-spacing-top-small']//a[@class='a-size-base a-link-normal s-underline-text s-underline-link-text s-link-style a-text-normal']/span[1]/span[1]";
+        String linkXpath = ".//div[@class='a-section a-spacing-small a-spacing-top-small']//a[@class='a-size-base a-link-normal s-underline-text s-underline-link-text s-link-style a-text-normal']";
         for (int i = 0; i < products.size(); i++) {
-            title = "www.amazon.com";
+//            title = "amazon.com";
+//            List<WebElement> productNames= driver.findElements(By.xpath(productNameXpath));
+//            if(productNames.size()>0){
+//                productName=driver.findElement(By.xpath(productNameXpath)).getText();
+//            }else{
+//                productName="null";
+//            }
+//            List<WebElement> priceProducts= driver.findElements(By.xpath(priceXpath));
+//            if(priceProducts.size()>0){
+//                String priceInString=driver.findElement(By.xpath(priceXpath)).getAttribute("innerHTML").replace("$","");
+//                price=Float.parseFloat(priceInString);
+//
+//            }else{
+//                price=0;
+//            }
+//            List<WebElement> linkProducts=driver.findElements(By.xpath(linkXpath));
+//            if(linkProducts.size()>0){
+//                link=driver.findElement(By.xpath(linkXpath)).getAttribute("href");
+//            }else{
+//                link="null";
+//            }
+
             try {
                 productName = products.get(i).findElement(By.xpath(productNameXpath)).getText();
             } catch (NoSuchElementException e) {
                 productName = "null";
             }
             try {
-                price = Float.parseFloat(products.get(i).findElement(By.xpath(priceXpath)).getAttribute("innerHTML"));
+                price = Float.parseFloat(products.get(i).findElement(By.xpath(priceXpath)).getAttribute("innerHTML").replace("$",""));
             } catch (NoSuchElementException e) {
                 price = 0;
             }
@@ -54,7 +79,6 @@ public class SearchPageAmazon {
             listProducts.add(product);
 
         }
-
         return listProducts;
 
 

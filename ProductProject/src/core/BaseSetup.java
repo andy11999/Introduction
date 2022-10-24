@@ -3,29 +3,25 @@ package core;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.*;
+import page.HomePageAmazon;
+import page.HomePageEbay;
 
 import java.util.concurrent.TimeUnit;
 
 public class BaseSetup {
-    private WebDriver driver;
+    public  WebDriver driver;
 
-
-    private static WebDriver initChromeDriver(String appURL){
+    @BeforeMethod
+    public void initChromeDriver(){
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\HP\\Downloads\\chromedriver_win32\\chromedriver.exe");
-        WebDriver driver= new ChromeDriver();
+        driver= new ChromeDriver();
         driver.manage().window().maximize();
-        driver.get(appURL);
         driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        return driver;
+
+
     }
 
-    @Parameters({"appURL" })
-    @BeforeTest
-    public void setDriver(@Optional String appURL) {
-        driver=initChromeDriver(appURL);
-        driver.quit();
-    }
 
     @AfterClass
     public void tearDown() throws Exception {

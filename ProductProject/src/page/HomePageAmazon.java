@@ -5,13 +5,15 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
 public class HomePageAmazon {
-    private WebDriver driver;
-
+    public static WebDriver driver;
     public HomePageAmazon(WebDriver driver) {
         this.driver = driver;
     }
-    public void searchPage(String search) {
-        driver.findElement(By.id("twotabsearchtextbox")).sendKeys(search);
+    public void getPage(){
+        driver.get("https://amazon.com");
+    }
+    public void searchPage() {
+        driver.findElement(By.id("twotabsearchtextbox")).sendKeys("iPhone 11");
         driver.findElement(By.id("nav-search-submit-button")).click();
     }
 }

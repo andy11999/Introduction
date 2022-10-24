@@ -14,17 +14,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SearchIphoneTest extends BaseSetup {
-    private WebDriver driver;
 
     @Test
     public void searchData() {
-        SearchPageAmazon searchPageAmazon = new SearchPageAmazon();
-        SearchPageEbay searchPageEbay = new SearchPageEbay();
+        SearchPageAmazon searchPageAmazon = new SearchPageAmazon(driver);
+        SearchPageEbay searchPageEbay = new SearchPageEbay(driver);
         HomePageAmazon homePageAmazon = new HomePageAmazon(driver);
         HomePageEbay homePageEbay= new HomePageEbay(driver);
-        homePageAmazon.searchPage("iPhone 11");
-        homePageEbay.searchPage("iPhone11");
+        homePageAmazon.getPage();
+        homePageAmazon.searchPage();
         List<Product> listProductAmazon = searchPageAmazon.extractData();
+        homePageEbay.getPage();
+        homePageEbay.searchPage();
         List<Product> listProductEbay = searchPageEbay.extractData();
         listProductEbay.addAll(listProductAmazon);
         List<Product> sortedProduct = listProductEbay.stream()

@@ -2,10 +2,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite">
     <test name="SearchPageAmazon">
-        <parameter name="appURL" value="www.amazon.com"></parameter>
         <classes>
-            <class name="testcase.SearchIphoneTest"></class>
+            <class name="testcase.SearchIphoneTest">
+            </class>
         </classes>
-
     </test>
 </suite>

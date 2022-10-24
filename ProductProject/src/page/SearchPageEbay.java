@@ -15,7 +15,11 @@ public class SearchPageEbay {
     String productName = "";
     float price;
     String link = "";
-    private WebDriver driver;
+    public WebDriver driver;
+
+    public SearchPageEbay(WebDriver driver) {
+        this.driver = driver;
+    }
 
     public List<Product> extractData() {
         try {
@@ -32,17 +36,18 @@ public class SearchPageEbay {
 
         List<Product> listProducts = new ArrayList<>();
         List<WebElement> products = driver.findElements(By.xpath("//div[@class='s-item__wrapper clearfix']"));
-        String productNameXpath = "//div[@class='s-item__title']";
-        String priceXpath = "//span[@class='s-item__price']";
-        String linkXpath = "//a[@class='s-item__link']";
-        for (int i = 0; i < products.size(); i++) {
+        String productNameXpath = ".//div[@class='s-item__title']";
+        String priceXpath = ".//span[@class='s-item__price']";
+        String linkXpath = ".//a[@class='s-item__link']";
+        for (int i = 1; i < products.size(); i++) {
+            title="ebay.com";
             try {
-                productName = driver.findElement(By.xpath(productNameXpath)).getText();
+                productName = products.get(i).findElement(By.xpath(productNameXpath)).getText();
             } catch (NoSuchElementException e) {
                 productName = "null";
             }
             try {
-                String priceInString = driver.findElement(By.xpath(priceXpath)).getAttribute("innerHTML");
+                String priceInString = products.get(i).findElement(By.xpath(priceXpath)).getAttribute("innerHTML");
 
                 if (priceInString.contains("<span class=\"DEFAULT\"> to </span>")) {
                     if (priceInString.contains(" VND")) {
@@ -69,7 +74,7 @@ public class SearchPageEbay {
                 price = 0;
             }
             try {
-                link = driver.findElement(By.xpath(linkXpath)).getAttribute("href");
+                link = products.get(i).findElement(By.xpath(linkXpath)).getAttribute("href");
             } catch (NoSuchElementException e) {
                 link = "null";
             }
